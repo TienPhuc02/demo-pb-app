@@ -22,6 +22,7 @@ const LoginPage: React.FC = () => {
       console.log(":>>> check res ", res);
       if (res && res.data) {
         console.log(res.data?.data?.user?.permissions);
+        localStorage.setItem("access_token", res?.data?.data?.access_token);
         const checkUpdateUserList = await pb
           .collection("users_auth_demo")
           .getFullList({
@@ -32,9 +33,15 @@ const LoginPage: React.FC = () => {
           .getFullList({
             filter: `name = "${res.data?.data?.user?.role?.name}"`,
           });
+        const resultPermissionCreateList = await pb
+          .collection("permissions_demo")
+          .getFullList({
+            filter: `users_auth_demo.name = "${res.data?.data?.user?.name}"`,
+          });
         if (
           checkUpdateUserList.length === 0 &&
-          checkUpdateRolesList.length === 0
+          checkUpdateRolesList.length === 0 &&
+          resultPermissionCreateList.length === 0
         ) {
           await pb.collection("roles_demo").create({
             name: res.data?.data?.user?.role?.name,
@@ -137,7 +144,7 @@ const LoginPage: React.FC = () => {
         setSpinning(false);
       }, 2000);
       form.resetFields();
-      // navigate("/");
+      navigate("/");
     } catch (error) {
       console.log(error);
     }
