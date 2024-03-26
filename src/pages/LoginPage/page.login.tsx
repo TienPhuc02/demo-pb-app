@@ -144,7 +144,7 @@ const LoginPage: React.FC = () => {
         setSpinning(false);
       }, 2000);
       form.resetFields();
-      navigate("/");
+      navigate("/dashboard");
     } catch (error) {
       console.log(error);
     }

@@ -10,14 +10,54 @@ import {
 import { Layout, Menu, Button, theme } from "antd";
 import "./page.home.css";
 import { Footer } from "antd/es/layout/layout";
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useLocation } from "react-router-dom";
 const { Header, Sider } = Layout;
-
+const item = [
+  {
+    key: "/dashboard",
+    icon: (
+      <Link to={"/dashboard"}>
+        <DashboardOutlined />
+      </Link>
+    ),
+    label: "DashBoard",
+  },
+  {
+    key: "/companies",
+    icon: (
+      <Link to={"/companies"}>
+        <CompassOutlined />
+      </Link>
+    ),
+    label: "Companies",
+  },
+  {
+    key: "/jobs",
+    icon: (
+      <Link to={"/jobs"}>
+        <CopyOutlined />
+      </Link>
+    ),
+    label: "Jobs",
+  },
+  {
+    key: "/users",
+    icon: (
+      <Link to={"/users"}>
+        <UserOutlined />
+      </Link>
+    ),
+    label: "Users",
+  },
+];
 const HomePage: React.FC = () => {
   const [collapsed, setCollapsed] = useState(false);
   const {
     token: { colorBgContainer },
   } = theme.useToken();
+  const location = useLocation();
+  console.log(location.pathname);
+  const currentKey = item.find((i) => i.key === location.pathname)?.key || "";
   return (
     <Layout style={{ minHeight: "100vh" }}>
       <Sider
@@ -32,45 +72,12 @@ const HomePage: React.FC = () => {
         <Menu
           theme="light"
           mode="inline"
-          defaultSelectedKeys={["1"]}
-          items={[
-            {
-              key: "1",
-              icon: (
-                <Link to={"/dashboard"}>
-                  <DashboardOutlined />
-                </Link>
-              ),
-              label: "DashBoard",
-            },
-            {
-              key: "2",
-              icon: (
-                <Link to={"/companies"}>
-                  <CompassOutlined />
-                </Link>
-              ),
-              label: "Companies",
-            },
-            {
-              key: "3",
-              icon: (
-                <Link to={"/jobs"}>
-                  <CopyOutlined />
-                </Link>
-              ),
-              label: "Jobs",
-            },
-            {
-              key: "4",
-              icon: (
-                <Link to={"/users"}>
-                  <UserOutlined />
-                </Link>
-              ),
-              label: "Users",
-            },
-          ]}
+          defaultSelectedKeys={[currentKey]}
+          items={item.map((i) => ({
+            key: i.key,
+            icon: i.icon,
+            label: i.label,
+          }))}
         />
       </Sider>
       <Layout>
