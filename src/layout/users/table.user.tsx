@@ -27,7 +27,7 @@ const TableUser: React.FC = () => {
     const res = await callAPIGetAllUserPaginate();
     console.log(res);
     if (res && res.data) {
-      message.success(res.message);
+      message.success(res.data?.message);
       setListUser(res.data.result);
     }
   };

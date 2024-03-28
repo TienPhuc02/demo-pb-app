@@ -7,7 +7,7 @@
     "distDir": "../dist"
   },
   "package": {
-    "productName": "pb-client-anvi",
+    "productName": "pb-demo-app",
     "version": "0.1.0"
   },
   "tauri": {
@@ -16,6 +16,7 @@
     },
     "bundle": {
       "active": true,
+      "identifier": "com.example.pb-demo-app",
       "category": "DeveloperTool",
       "copyright": "",
       "deb": {
@@ -29,7 +30,6 @@
         "icons/icon.icns",
         "icons/icon.ico"
       ],
-      "identifier": "com.tauri.dev",
       "longDescription": "",
       "macOS": {
         "entitlements": null,

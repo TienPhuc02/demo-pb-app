@@ -5,7 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build": "concurrently \"npm run build-app\" \"npm run build-pocketbase\"",
+    "build-app": "tsc && vite build",
+    "build-pocketbase": "cd backend-pb-demo && pocketbase build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "tauri": "tauri",

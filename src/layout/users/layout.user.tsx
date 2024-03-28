@@ -1,6 +1,6 @@
 import { theme } from "antd";
 import { Content } from "antd/es/layout/layout";
-import React from "react";
+
 import TableUser from "./table.user";
 
 const LayoutUser = () => {
