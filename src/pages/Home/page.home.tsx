@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   CompassOutlined,
   CopyOutlined,
@@ -11,6 +11,7 @@ import { Layout, Menu, Button, theme } from "antd";
 import "./page.home.css";
 import { Footer } from "antd/es/layout/layout";
 import { Link, Outlet, useLocation } from "react-router-dom";
+import { getAccount } from "../../service/backend-service.api";
 const { Header, Sider } = Layout;
 const item = [
   {
@@ -58,6 +59,13 @@ const HomePage: React.FC = () => {
   const location = useLocation();
   console.log(location.pathname);
   const currentKey = item.find((i) => i.key === location.pathname)?.key || "";
+  const callAPIGetAccount = async () => {
+    const res = await getAccount();
+    console.log(res);
+  };
+  useEffect(() => {
+    callAPIGetAccount();
+  });
   return (
     <Layout style={{ minHeight: "100vh" }}>
       <Sider

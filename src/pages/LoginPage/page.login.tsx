@@ -21,22 +21,22 @@ const LoginPage: React.FC = () => {
       const res = await callPostLoginAPI(values.username, values.password);
       console.log(":>>> check res ", res);
       if (res && res.data) {
-        console.log(res.data?.data?.user?.permissions);
-        localStorage.setItem("access_token", res?.data?.data?.access_token);
+        console.log(res.data?.user?.permissions);
+        localStorage.setItem("access_token", res?.data?.access_token);
         const checkUpdateUserList = await pb
           .collection("users_auth_demo")
           .getFullList({
-            filter: `name = "${res.data?.data?.user?.name}"`,
+            filter: `name = "${res.data?.user?.name}"`,
           });
         const checkUpdateRolesList = await pb
           .collection("roles_demo")
           .getFullList({
-            filter: `name = "${res.data?.data?.user?.role?.name}"`,
+            filter: `name = "${res.data?.user?.role?.name}"`,
           });
         const resultPermissionCreateList = await pb
           .collection("permissions_demo")
           .getFullList({
-            filter: `users_auth_demo.name = "${res.data?.data?.user?.name}"`,
+            filter: `users_auth_demo.name = "${res.data?.user?.name}"`,
           });
         if (
           checkUpdateUserList.length === 0 &&
@@ -44,31 +44,34 @@ const LoginPage: React.FC = () => {
           resultPermissionCreateList.length === 0
         ) {
           await pb.collection("roles_demo").create({
-            name: res.data?.data?.user?.role?.name,
-            description: res.data?.data?.user?.role?.description,
+            name: res.data?.user?.role?.name,
+            description: res.data?.user?.role?.description,
           });
           await pb.collection("users_auth_demo").create({
-            name: res.data?.data?.user?.name,
-            email: res.data?.data?.user?.email,
-            age: res.data?.data?.user?.age,
-            gender: res.data?.data?.user?.gender,
-            address: res.data?.data?.user?.address,
-            isDeleted: false,
-            deletedAt: "test",
-            refreshToken: res.data?.data?.refresh_token,
+            name: res.data?.user?.name,
+            email: res.data?.user?.email,
+            age: res.data?.user?.age,
+            gender: res.data?.user?.gender,
+            address: res.data?.user?.address,
+            isDeleted: res.data?.user?.isDeleted,
+            deletedAt: res.data?.user?.deletedAt,
+            backend_createdAt: res.data?.user?.createdAt,
+            backend_updatedAt: res.data?.user?.updatedAt,
+            backend_id: res.data?.user?._id,
+            refreshToken: res.data?.refresh_token,
           });
           const checkUpdatePermissionUserList = await pb
             .collection("users_auth_demo")
             .getFullList({
-              filter: `name = "${res.data?.data?.user?.name}"`,
+              filter: `name = "${res.data?.user?.name}"`,
             });
           const checkUpdatePermissionRolesList = await pb
             .collection("roles_demo")
             .getFullList({
-              filter: `name = "${res.data?.data?.user?.role?.name}"`,
+              filter: `name = "${res.data?.user?.role?.name}"`,
             });
           // console.log(checkUpdatePermissionUserList);
-          const arrayResPermission = res?.data?.data?.user?.permissions;
+          const arrayResPermission = res?.data?.user?.permissions;
           for (const permission of arrayResPermission) {
             await pb.collection("permissions_demo").create({
               name: permission.name,
@@ -81,18 +84,21 @@ const LoginPage: React.FC = () => {
           }
         } else {
           const dataUserUpdatePB = {
-            name: res.data?.data?.user?.name,
-            email: res.data?.data?.user?.email,
-            age: res.data?.data?.user?.age,
-            gender: res.data?.data?.user?.gender,
-            address: res.data?.data?.user?.address,
-            isDeleted: false,
-            deletedAt: "test",
-            refreshToken: res.data?.data?.refresh_token,
+            name: res.data?.user?.name,
+            email: res.data?.user?.email,
+            age: res.data?.user?.age,
+            gender: res.data?.user?.gender,
+            address: res.data?.user?.address,
+            isDeleted: res.data?.user?.isDeleted,
+            deletedAt: res.data?.user?.deletedAt,
+            backend_id: res.data?.user?._id,
+            backend_createdAt: res.data?.user?.createdAt,
+            backend_updatedAt: res.data?.user?.updatedAt,
+            refreshToken: res?.data?.refresh_token,
           };
           const dataRolesUpdatePB = {
-            name: res.data?.data?.user?.role?.name,
-            description: res.data?.data?.user?.role?.name,
+            name: res.data?.user?.role?.name,
+            description: res.data?.user?.role?.name,
           };
           // console.log(dataUserUpdatePB);
           await pb
@@ -105,18 +111,18 @@ const LoginPage: React.FC = () => {
         const resultUpdateUserUpdateList = await pb
           .collection("users_auth_demo")
           .getFullList({
-            filter: `name = "${res.data?.data?.user?.name}"`,
+            filter: `name = "${res.data?.user?.name}"`,
           });
         // console.log(resultUpdateUserUpdateList);
         const resultRolesUpdateList = await pb
           .collection("roles_demo")
           .getFullList({
-            filter: `name = "${res.data?.data?.user?.role?.name}"`,
+            filter: `name = "${res.data?.user?.role?.name}"`,
           });
         const resultPermissionUpdateList = await pb
           .collection("permissions_demo")
           .getFullList({
-            filter: `users_auth_demo.name = "${res.data?.data?.user?.name}"`,
+            filter: `users_auth_demo.name = "${res.data?.user?.name}"`,
           });
         console.log(resultPermissionUpdateList);
         const resultPermissionUpdateArrayId = [];
